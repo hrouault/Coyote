@@ -36,3 +36,8 @@ make
 
 You don't need to run `make install` since you will upload it onto the board instead of installing it.
 
+Third party software
+====================
+
+This program includes a script which automatically the *STM32 USB FileSystem Device Library*. This library is not open-source and you have to agree with the provided license in order to use the code.
+
