@@ -17,3 +17,4 @@ doc/*.pdf
 src/usbvirtual
 filter-charac
 um0424.zip
+stm32_gui
