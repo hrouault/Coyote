@@ -53,6 +53,13 @@ STM32_USB_URL = $(ST_URL)/$(STM32_USB_FILENAME)
 STM32_GUI_FILENAME = stm32_gui_lib.zip
 STM32_GUI_URL = $(ST_URL)/$(STM32_GUI_FILENAME)
 
+STEVALBOARD_FOLDER = stm32_gui_lib/Utilities/STM32_EVAL
+STEVALBOARD3210C_FOLDER = $(STEVALBOARD_FOLDER)/STM3210C_EVAL
+STGUILIB_FOLDER = stm32_gui_lib/Libraries/Embedded_GUI_Library
+STGUILIB_INC = $(STGUILIB_FOLDER)/inc
+STGUIHAL_FOLDER = stm32_gui_lib/Libraries/Embedded_GUI_HAL
+STGUIHAL_INC = $(STGUIHAL_FOLDER)/inc
+
 STLIB_FOLDER = STM32_USB-FS-Device_Lib_V3.3.0/Libraries
 STLIB_INC = $(STLIB_FOLDER)/STM32F10x_StdPeriph_Driver/inc
 STUSBLIB_INC = $(STLIB_FOLDER)/STM32_USB-FS-Device_Driver/inc
@@ -61,7 +68,6 @@ STVCP_INC = STM32_USB-FS-Device_Lib_V3.3.0/Project/Virtual_COM_Port/inc
 CMSIS = $(STLIB_FOLDER)/CMSIS/CM3
 CORESUPPORT = $(CMSIS)/CoreSupport
 DEVICESUPPORT = $(CMSIS)/DeviceSupport/ST/STM32F10x
-BOARDHEADER = STM32_USB-FS-Device_Lib_V3.3.0/Utilities/STM32_EVAL
 
 stdperi_src = $(STLIB_FOLDER)/STM32F10x_StdPeriph_Driver/src
 stdperi = $(stdperi_src)/stm32f10x_gpio.c\
@@ -74,20 +80,37 @@ stdperi = $(stdperi_src)/stm32f10x_gpio.c\
 		  $(stdperi_src)/stm32f10x_exti.c\
 		  $(stdperi_src)/stm32f10x_i2c.c\
 		  $(stdperi_src)/stm32f10x_adc.c\
+		  $(stdperi_src)/stm32f10x_flash.c\
 		  $(stdperi_src)/misc.c
 
 usbperi_src = $(STLIB_FOLDER)/STM32_USB-FS-Device_Driver/src
-usbperi = $(usbperi_src)/usb_init.c $(usbperi_src)/usb_regs.c\
-		  $(usbperi_src)/usb_core.c $(usbperi_src)/usb_mem.c\
-		  $(usbperi_src)/usb_int.c $(usbperi_src)/usb_sil.c
+usbperi = $(usbperi_src)/usb_init.c\
+		  $(usbperi_src)/usb_regs.c\
+		  $(usbperi_src)/usb_core.c\
+		  $(usbperi_src)/usb_mem.c\
+		  $(usbperi_src)/usb_int.c\
+		  $(usbperi_src)/usb_sil.c\
+		  $(usbperi_src)/otgd_fs_dev.c\
+		  $(usbperi_src)/otgd_fs_cal.c\
+		  $(usbperi_src)/otgd_fs_pcd.c
 
-guilib_src = 
+guilib_src = $(STGUILIB_FOLDER)/src
+guilib = $(guilib_src)/cursor.c\
+ 		 $(guilib_src)/gl_fonts.c\
+   		 $(guilib_src)/graphicObject.c\
+		 $(guilib_src)/images.c
+guihal_src = $(STGUIHAL_FOLDER)/src
+guihal = $(guihal_src)/touchscreen.c\
+		 $(guihal_src)/LcdHal.c\
+		 $(guihal_src)/TscHal.c
 
-evalboard = STM32_USB-FS-Device_Lib_V3.3.0/Utilities/STM32_EVAL/STM3210B_EVAL/stm3210b_eval.c
+
+evalboard = $(STEVALBOARD3210C_FOLDER)/stm3210c_eval.c\
+			$(STEVALBOARD3210C_FOLDER)/stm3210c_eval_lcd.c\
+			$(STEVALBOARD3210C_FOLDER)/stm3210c_eval_ioe.c
 
 STVCP_SRC = STM32_USB-FS-Device_Lib_V3.3.0/Project/Virtual_COM_Port/src
-usbvirtual = $(STVCP_SRC)/hw_config.c\
-			 $(STVCP_SRC)/usb_pwr.c\
+usbvirtual = $(STVCP_SRC)/usb_pwr.c\
 			 $(STVCP_SRC)/usb_prop.c\
 			 $(STVCP_SRC)/usb_desc.c\
 			 $(STVCP_SRC)/usb_istr.c\
@@ -95,27 +118,43 @@ usbvirtual = $(STVCP_SRC)/hw_config.c\
 
 startup = startup/startup_stm32f10x_md.c
 
-um0424.zip:
+$(stdperi):
 	curl -LO $(STM32_USB_URL)
-
-STM32_USB-FS-Device_Lib_V3.3.0: $(STM32_USB_FILENAME)
 	unzip -q $(STM32_USB_FILENAME)
+
+$(guilib):
+	curl -LO $(STM32_GUI_URL)
+	mkdir stm32_gui_lib
+	unzip -q $(STM32_GUI_FILENAME) -d stm32_gui_lib
 
 cmsis = $(CMSIS)/CoreSupport/core_cm3.c
 
-
 bin_PROGRAMS = tempcontrol
-
-libstm.c: STM32_USB-FS-Device_Lib_V3.3.0
 
 tempcontrol_SOURCES = $(cmsis)\
 					  $(stdperi)\
 					  $(usbperi)\
 					  $(usbvirtual)\
 					  $(evalboard)\
+					  $(guilib)\
+					  $(guihal)\
 					  $(startup)\
 					  syscalls.c\
-					  main.c adc.c adc.h pwm.c pwm.h
+					  main.c\
+					  adc.c adc.h\
+					  pwm.c pwm.h\
+					  hw_config.c hw_config.h\
+					  display.c display.h\
+					  pictures.c pictures.h\
+					  rtc.c rtc.h
 tempcontrol_CPPFLAGS = -D$(BOARD) -D$(MCULINE) -DUSE_STDPERIPH_DRIVER\
-					   -I$(CORESUPPORT) -I$(DEVICESUPPORT) -I$(BOARDHEADER)\
-					   -I$(STLIB_INC) -I$(STUSBLIB_INC) -I$(STVCP_INC)
+					   -I$(CORESUPPORT)\
+					   -I$(DEVICESUPPORT)\
+					   -I$(STEVALBOARD_FOLDER) -I$(STEVALBOARD3210C_FOLDER)\
+					   -I$(STLIB_INC) -I$(STUSBLIB_INC) -I$(STVCP_INC)\
+					   -I$(STGUILIB_INC) -I$(STGUIHAL_INC)
+tempcontrol_CFLAGS = -mcpu=cortex-m3 -mthumb -msoft-float -fno-common\
+					 -Os -Wall -fdata-sections -ffunction-sections
+tempcontrol_LDFLAGS = -nostdlib -nodefaultlibs -nostartfiles\
+					  -T$(top_srcdir)/linker/stm3210c_flash.ld\
+					  -Wl,--gc-sections

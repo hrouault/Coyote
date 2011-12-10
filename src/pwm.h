@@ -1,8 +1,8 @@
 /* Copyright (c) 2010,2011, Hervé Rouault
  * All rights reserved.
- * 
+ *
  * This file is part of Coyotte
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -13,7 +13,7 @@
  *     * Neither the name of the <organization> nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,31 +25,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * =====================================================================================
- *
- *       Filename:  pwm.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/06/11 11:46:44
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *        Company:  
- *
- * =====================================================================================
  */
 
 #ifndef __PWM_H__
 #define __PWM_H__
 
+extern int8_t pid_mode;
 
 extern int32_t pid_int;
 extern int32_t pid_prop;
 extern int32_t pid_deriv;
-extern int16_t pwm_duty;
+extern int32_t pwm_duty;
+
+extern uint32_t gain_p;
+extern uint32_t gain_i;
+extern uint32_t gain_d;
 
 void pwm_init();
 
@@ -57,6 +47,6 @@ void pid_init();
 
 void pid_control();
 
-#define PWM_PERIOD 0x0400;
+#define PWM_PERIOD 0x0C00;
 
 #endif /* __PWM_H__ */

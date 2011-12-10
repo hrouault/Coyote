@@ -1,10 +1,5 @@
 
-export CFLAGS="-mcpu=cortex-m3 -mthumb -msoft-float -fno-common -O0 -ggdb -Wall -fdata-sections -ffunction-sections"
-##export CFLAGS="-mcpu=cortex-m3 -mthumb -msoft-float -fno-common -Os -Wall -fdata-sections -ffunction-sections"
 export AFLAGS="-mcpu=cortex-m3 -mthumb -ahls -mapcs-32 -gstab"
-##LDFLAGS="-nostdlib -nodefaultlibs -nostartfiles -T /Users/rouault/postdoc/tempcontrol/tempreg-simple3/linker/stm32_flash.ld -Wl,--gc-sections"
-export LDFLAGS="-T/Users/rouault/postdoc/tempcontrol/tempreg-simple3/linker/stm32_flash.ld -Wl,--gc-sections"
-##LDFLAGS="-T/Users/rouault/postdoc/tempcontrol/cortexm3-tempreg/linker/stm_h103_blink_rom.cmd -nostartfiles"
 CPFLAGS="-Obinary"
 ODFLAGS="-S"
 
