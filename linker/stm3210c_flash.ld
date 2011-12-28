@@ -84,7 +84,7 @@ SECTIONS
       __exidx_end = .;
     } >FLASH
 
-  .ARM.attributes 0 : { *(.ARM.attributes) }
+  .ARM.attributes : { *(.ARM.attributes) } >FLASH
 
   .preinit_array     :
   {

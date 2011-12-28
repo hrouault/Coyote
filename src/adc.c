@@ -253,3 +253,4 @@ void comp_meanadc()
     adc_mean = adc_mean_temp;
     adc_curtemp = resisttotemp(adctoresist(adc_mean));
 }
+

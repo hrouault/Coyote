@@ -28,8 +28,9 @@
 #include "platform_config.h"
 #include "usb_pwr.h"
 #include "stm32_eval.h"
-#include "TscHal.h"
-#include "LcdHal.h"
+//#include "TscHal.h"
+//#include "LcdHal.h"
+#include "display.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -329,11 +330,6 @@ void USB_OTG_BSP_uDelay(const uint32_t usec)
 }
 #endif /* STM32F10X_CL */
 
-/**
-  * @brief  Set evaluation board Parameters parameters
-  * @param  None
-  * @retval None
-  */
 void HWConfig_SetHardwareParams(void)
 {
   HWConfig_TSCParamInit();
@@ -403,4 +399,18 @@ void USART_Config_Default()
 bool USART_Config()
 {
     return TRUE;
+}
+
+TSC_HW_Parameters_TypeDef pTscHwParam;
+
+TSC_HW_Parameters_TypeDef* NewTscHwParamObj ()
+{
+  return &pTscHwParam;
+}
+
+LCD_HW_Parameters_TypeDef pLcdHwParam;
+
+LCD_HW_Parameters_TypeDef* NewLcdHwParamObj()
+{
+  return &pLcdHwParam;
 }

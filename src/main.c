@@ -40,16 +40,16 @@
 #include "adc.h"
 #include "rtc.h"
 #include "display.h"
-#include "touchscreen.h"
-#include "graphicObject.h"
-#include "TscHal.h"
+//#include "touchscreen.h"
+//#include "graphicObject.h"
+//#include "TscHal.h"
 
 int main(void)
 {
-    Set_System();
-//    Set_USBClock();
-//    USB_Interrupts_Config();
-//    USB_Init();
+    //    Set_System();
+    //    Set_USBClock();
+    //    USB_Interrupts_Config();
+    //    USB_Init();
     /*    // Configure PC.12 as output push-pull (LED)
      *    GPIO_InitTypeDef GPIO_InitStructure;
      *    GPIO_WriteBit(GPIOC,GPIO_Pin_12,Bit_SET);
@@ -58,13 +58,14 @@ int main(void)
      *    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
      *    GPIO_Init(GPIOC, &GPIO_InitStructure);
      */
-//    adc_init();
-//    pwm_init();
-//    pid_init();
-//    RTC_NVIC_configuration();
-//    RTC_configuration();
+    //    adc_init();
+    //    pwm_init();
+    //    pid_init();
+    //    RTC_NVIC_configuration();
+    //    RTC_configuration();
     display_init();
     /* Infinite main loop ------------------------------------------------------*/
+    //    TSC_Init();
     while (1) {
         /* Catching touch events */
         if (TS_IsCalibrationDone() == SET) {
@@ -78,8 +79,8 @@ int main(void)
 
 void CatchInputEvents()
 {
-  /* catch touch screen events */
-  TSC_Read();
+    /* catch touch screen events */
+    TSC_Read();
 }
 
 #ifdef USE_FULL_ASSERT

@@ -1,6 +1,1 @@
-
-export AFLAGS="-mcpu=cortex-m3 -mthumb -ahls -mapcs-32 -gstab"
-CPFLAGS="-Obinary"
-ODFLAGS="-S"
-
 ../configure --host arm-none-eabi --with-newlib
